@@ -4,11 +4,15 @@ using System.Collections.Generic; // Required to use Lists or Dictionaries
 public class Main : MonoBehaviour
 {
     static public Main S;
+    static public Dictionary<WeaponType, WeaponDefinition> W_DEFS;
     public GameObject[] prefabEnemies;
     public float enemySpawnPerSecond = 0.5f; // # Enemies/second
     public float enemySpawnPadding = 1.5f; // Padding for position
+    public WeaponDefinition[] weaponDefinitions;
     public bool ________________;
+    public WeaponType[] activeWeaponTypes;
     public float enemySpawnRate; // Delay between Enemy spawns
+
     void Awake()
     {
         S = this;
@@ -18,7 +22,24 @@ public class Main : MonoBehaviour
         enemySpawnRate = 1f / enemySpawnPerSecond;
         // Invoke call SpawnEnemy() once after a 2 second delay
         Invoke("SpawnEnemy", enemySpawnRate);
+
+        // A generic Dictionary with WeaponType as the key
+        W_DEFS = new Dictionary<WeaponType, WeaponDefinition>();
+        foreach (WeaponDefinition def in weaponDefinitions)
+        {
+            W_DEFS[def.type] = def;
+        }
     }
+
+    void Start()
+    {
+        activeWeaponTypes = new WeaponType[weaponDefinitions.Length];
+        for (int i = 0; i < weaponDefinitions.Length; i++)
+        {
+            activeWeaponTypes[i] = weaponDefinitions[i].type;
+        }
+    }
+
     public void SpawnEnemy()
     {
         // Pick a random Enemy prefab to instantiate

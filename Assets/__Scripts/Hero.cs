@@ -97,4 +97,5 @@ using System.Collections;public class Hero : MonoBehaviour
             print("Triggered: " + other.gameObject.name);
         }
     }
+    
 }
